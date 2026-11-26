@@ -1,0 +1,101 @@
+export const INITIAL_SAMPLE_ARRIVALS = [1, 2, 3, 6, 7, 10, 11, 12, 15, 16, 20, 2, 11];
+
+export const BUILT_IN_TEST_CASES = [
+  {
+    id: 'tc-1',
+    name: 'Test Case 1 — Out-of-Order & Partial Merge',
+    description: 'Verifies scattered arrivals coalesce into sorted, non-overlapping intervals.',
+    arrivals: [1, 3, 7, 2, 6],
+    followUp: [],
+    expectedIntervals: [
+      { start: 1, end: 3 },
+      { start: 6, end: 7 },
+    ],
+    expectedDuplicates: 0,
+    expectedText: '[1–3], [6–7]',
+  },
+  {
+    id: 'tc-2',
+    name: 'Test Case 2 — Single Isolated Package',
+    description: 'Verifies a single arrival creates a degenerate unit interval [4–4].',
+    arrivals: [4],
+    followUp: [],
+    expectedIntervals: [{ start: 4, end: 4 }],
+    expectedDuplicates: 0,
+    expectedText: '[4]',
+  },
+  {
+    id: 'tc-3',
+    name: 'Test Case 3 — Sequential Contiguous Stream',
+    description: 'Verifies sequential arrivals extend a single continuous interval cleanly.',
+    arrivals: [1, 2, 3, 4, 5],
+    followUp: [],
+    expectedIntervals: [{ start: 1, end: 5 }],
+    expectedDuplicates: 0,
+    expectedText: '[1–5]',
+  },
+  {
+    id: 'tc-4',
+    name: 'Test Case 4 — Multi-Bridge Interval Merging',
+    description: 'Inserts 1, 3, 5 first (3 intervals), then inserts connecting bridges 2 and 4.',
+    arrivals: [1, 3, 5],
+    followUp: [2, 4],
+    expectedIntervals: [{ start: 1, end: 5 }],
+    expectedDuplicates: 0,
+    expectedText: '[1–5]',
+  },
+  {
+    id: 'tc-5',
+    name: 'Test Case 5 — Duplicate Arrival Suppression',
+    description: 'Ensures duplicate ID 2 is ignored without splitting or duplicating intervals.',
+    arrivals: [1, 2, 2, 3],
+    followUp: [],
+    expectedIntervals: [{ start: 1, end: 3 }],
+    expectedDuplicates: 1,
+    expectedText: '[1–3] (Duplicates: 1)',
+  },
+  {
+    id: 'tc-6',
+    name: 'Test Case 6 — Widely Spaced Large IDs',
+    description: 'Proves O(k) memory efficiency without allocating an array up to 1,000,000.',
+    arrivals: [10, 1000000],
+    followUp: [],
+    expectedIntervals: [
+      { start: 10, end: 10 },
+      { start: 1000000, end: 1000000 },
+    ],
+    expectedDuplicates: 0,
+    expectedText: '[10–10], [1000000–1000000]',
+  },
+];
+
+export const COMPLEXITY_ROWS = [
+  {
+    operation: 'Insert Package ID (New / Extend / Merge)',
+    avlTime: 'O(log k)',
+    naiveArrayTime: 'O(n log n) or O(M)',
+    space: 'O(k)',
+    notes: 'k = number of disjoint intervals (k <= n). Rebalanced via at most 2 rotations.',
+  },
+  {
+    operation: 'Predecessor / Successor Lookup',
+    avlTime: 'O(log k)',
+    naiveArrayTime: 'O(n) scan or O(log n)',
+    space: 'O(1) aux',
+    notes: 'Tree height is strictly bounded by 1.44 * log2(k + 2).',
+  },
+  {
+    operation: 'Duplicate Detection',
+    avlTime: 'O(log k)',
+    naiveArrayTime: 'O(n) or O(1) hash',
+    space: 'O(1) aux',
+    notes: 'Checked immediately during predecessor search (id <= pred.end).',
+  },
+  {
+    operation: 'Missing Range Query [L, R]',
+    avlTime: 'O(log k + m)',
+    naiveArrayTime: 'O(R - L) or O(n)',
+    space: 'O(m)',
+    notes: 'm = overlapping intervals inside [L, R]. Unaffected by R - L = 1,000,000+.',
+  },
+];
