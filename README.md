@@ -7,6 +7,8 @@ WarehouseIQ is a real-time warehouse package tracking dashboard powered by an in
 
 ## Core Capabilities
 
+
+
 - **AVL Tree Interval Engine (`src/engine/avlIntervalTree.js`)**:
   - Incremental `O(log k)` insertion, predecessor/successor lookup, boundary extension, and bridge merging (`LL`, `RR`, `LR`, `RL` rotations).
   - Duplicate suppression without modifying existing intervals.
@@ -20,6 +22,7 @@ WarehouseIQ is a real-time warehouse package tracking dashboard powered by an in
   5. **Range Search** — Point lookup and pruned AVL range search with node traversal telemetry.
   6. **Algorithm Visualization** — Interactive SVG AVL tree diagram (Before/After/Side-by-Side), step-by-step execution trace, complexity table, and built-in Test Cases 1–6 runner.
   7. **Reports** — Sorted intervals table, missing ranges summary, arrival history, and **Export CSV**.
+
 
 ## Running Locally in VS Code
 
